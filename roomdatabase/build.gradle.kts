@@ -72,6 +72,9 @@ kotlin {
                 // room
                 implementation(libs.room.runtime)
                 implementation(libs.sqlite.bundled)
+
+                // Coroutines
+                api(libs.kotlinx.coroutines.core)
             }
         }
 
@@ -83,9 +86,9 @@ kotlin {
 
         androidMain {
             dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+                // koin
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.android)
             }
         }
 
