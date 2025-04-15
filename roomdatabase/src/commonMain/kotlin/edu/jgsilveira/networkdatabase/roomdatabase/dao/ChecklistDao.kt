@@ -1,7 +1,6 @@
 package edu.jgsilveira.networkdatabase.roomdatabase.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -11,12 +10,12 @@ import edu.jgsilveira.networkdatabase.roomdatabase.entity.ChecklistWithItemsEnti
 
 @Dao
 abstract class ChecklistDao {
-    @Query("SELECT * FROM ChecklistEntity")
+    @Query("SELECT * FROM checklist")
     abstract suspend fun getChecklistsWithItems(): List<ChecklistWithItemsEntity>
 
     @Transaction
-    @Query("SELECT * FROM ChecklistEntity WHERE checklist_id = :checklistId")
-    abstract suspend fun getChecklistWithItems(checklistId: Int): ChecklistWithItemsEntity?
+    @Query("SELECT * FROM checklist WHERE uuid = :checklistUuid")
+    abstract suspend fun getChecklistWithItems(checklistUuid: String): ChecklistWithItemsEntity?
 
     @Upsert
     abstract suspend fun upsertChecklist(checklist: ChecklistEntity)
@@ -24,16 +23,9 @@ abstract class ChecklistDao {
     @Upsert
     abstract suspend fun upsertChecklistItem(checklistItem: ChecklistItemEntity)
 
-    @Transaction
-    suspend fun upsertChecklistItems(checklistItems: List<ChecklistItemEntity>) {
-        checklistItems.forEach { item ->
-            upsertChecklistItem(item)
-        }
-    }
-
-    @Delete(ChecklistEntity::class)
+    @Query("DELETE FROM checklist WHERE 1 = 1")
     abstract suspend fun clearChecklists()
 
-    @Delete(ChecklistEntity::class)
-    abstract suspend fun removeChecklistById(vararg id: Int)
+    @Query("DELETE FROM checklist WHERE id in (:uuid)")
+    abstract suspend fun removeChecklistByUuid(vararg uuid: String)
 }

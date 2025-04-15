@@ -8,8 +8,13 @@ import androidx.room.PrimaryKey
     tableName = "checklist"
 )
 data class ChecklistEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey(autoGenerate = false)
+    val uuid: String,
+    @ColumnInfo(
+        name = "id",
+        defaultValue = "0"
+    )
+    val id: Long,
     @ColumnInfo("title")
     val title: String,
     @ColumnInfo(

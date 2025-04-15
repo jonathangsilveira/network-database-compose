@@ -4,10 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class ChecklistWithItemsEntity(
-    @Embedded val user: ChecklistEntity,
+    @Embedded val checklist: ChecklistEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "checklist_id"
+        parentColumn = "uuid",
+        entityColumn = "checklist_uuid"
     )
     val items: List<ChecklistItemEntity>
 )

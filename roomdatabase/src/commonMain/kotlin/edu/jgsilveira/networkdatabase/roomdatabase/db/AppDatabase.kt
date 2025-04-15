@@ -4,27 +4,27 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import edu.jgsilveira.networkdatabase.roomdatabase.Converters
 import edu.jgsilveira.networkdatabase.roomdatabase.dao.ChecklistDao
-import edu.jgsilveira.networkdatabase.roomdatabase.dao.ReminderScheduleDao
 import edu.jgsilveira.networkdatabase.roomdatabase.entity.ChecklistEntity
 import edu.jgsilveira.networkdatabase.roomdatabase.entity.ChecklistItemEntity
-import edu.jgsilveira.networkdatabase.roomdatabase.entity.ReminderScheduleEntity
 
 const val DATABASE_NAME = "my_room.db"
 
 @Database(
-    version = 1,
+    version = 3,
     entities = [
         ChecklistEntity::class,
-        ChecklistItemEntity::class,
-        ReminderScheduleEntity::class
+        ChecklistItemEntity::class
     ]
 )
+@TypeConverters(Converters::class)
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun provideChecklistDao(): ChecklistDao
-    abstract fun provideReminderScheduleDao(): ReminderScheduleDao
+    //abstract fun provideReminderScheduleDao(): ReminderScheduleDao
 }
 
 // The Room compiler generates the `actual` implementations.
@@ -37,8 +37,10 @@ fun getRoomDatabase(
     builder: RoomDatabase.Builder<AppDatabase>
 ): AppDatabase {
     return builder
-        .addMigrations()
-        .fallbackToDestructiveMigrationOnDowngrade(true)
+        .fallbackToDestructiveMigration(
+            dropAllTables = true
+        )
         .setDriver(BundledSQLiteDriver())
+        .addTypeConverter(Converters())
         .build()
 }

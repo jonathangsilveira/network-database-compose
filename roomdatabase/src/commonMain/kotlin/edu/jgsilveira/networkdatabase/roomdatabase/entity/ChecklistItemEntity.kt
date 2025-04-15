@@ -10,23 +10,23 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = ChecklistEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["checklist_id"],
+            parentColumns = ["uuid"],
+            childColumns = ["checklist_uuid"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class ChecklistItemEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey
+    val uuid: String,
     @ColumnInfo(name = "description")
     val description: String,
-    @ColumnInfo(name = "created_at_millis")
+    @ColumnInfo(name = "checklist_order")
     val checklistOrder: Int,
     @ColumnInfo(
         name = "created_at",
         typeAffinity = ColumnInfo.REAL
     ) val createdAtMillis: Long,
-    @ColumnInfo(name = "checklist_id")
-    val checklistId: Int
+    @ColumnInfo(name = "checklist_uuid")
+    val checklistId: String
 )

@@ -1,0 +1,8 @@
+<resources>
+    <string name="generic_error_message">
+        Something went wrong!
+    </string>
+    <string name="get_checklist_error_message">
+        Error on get checklist!
+    </string>
+</resources>
